@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useCallback } from 'react';
 import { useNavigate } from 'react-router-dom';
 import {
   getCurrentStudent,
@@ -28,11 +28,7 @@ const Dashboard = () => {
     course: ''
   });
 
-  useEffect(() => {
-    fetchStudentData();
-  }, []);
-
-  const fetchStudentData = async () => {
+  const fetchStudentData = useCallback(async () => {
     setLoading(true);
     const result = await getCurrentStudent();
     setLoading(false);
@@ -44,7 +40,11 @@ const Dashboard = () => {
       setError(result.message);
       setTimeout(() => navigate('/login'), 2000);
     }
-  };
+  }, [navigate]);
+
+  useEffect(() => {
+    fetchStudentData();
+  }, [fetchStudentData]);
 
   const handlePasswordChange = (e) => {
     const { name, value } = e.target;
