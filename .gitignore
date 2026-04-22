@@ -1,5 +1,5 @@
-backend/
 frontend/node_modules/
 frontend/build/
 .DS_Store
 *.log
+backend/node_modules/
