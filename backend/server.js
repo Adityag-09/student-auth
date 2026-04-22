@@ -6,7 +6,22 @@ require('dotenv').config();
 const app = express();
 
 // Middleware
-app.use(cors());
+const allowedOrigins = [
+  'http://localhost:3000',
+  'https://student-auth-frontend.vercel.app', // Update with your Vercel URL
+  process.env.FRONTEND_URL
+];
+
+app.use(cors({
+  origin: (origin, callback) => {
+    if (!origin || allowedOrigins.includes(origin)) {
+      callback(null, true);
+    } else {
+      callback(new Error('CORS not allowed'));
+    }
+  },
+  credentials: true
+}));
 app.use(express.json());
 
 // Database connection
